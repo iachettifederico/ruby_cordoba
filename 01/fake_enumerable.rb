@@ -6,6 +6,12 @@ module FakeEnumerable
   end
   alias :collect :map
 
+  def all?
+    
+    each { |o| return false unless o }
+    true
+  end
+
   
   
 end
