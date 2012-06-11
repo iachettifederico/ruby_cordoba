@@ -144,22 +144,67 @@ describe EnumerateMe do
       @it << 1 << 2 << 3
     end
 
-    xit "cycles to infinity" do
-      @it.cycle { |x| x }
-      #usar un mock!!!!!!!!!!!!!!!!!!!!!!!!
-    end
+    # it "cycles to infinity" do
+    #   @it.cycle { |x| x }
+    #   #usar un mock!!!!!!!!!!!!!!!!!!!!!!!!
+    # end
 
   end
 
   describe "#detect and #find" do
-    it "detects some items" do
-      
+    before do
+      @it << [1,1] << [2,1] << [3,1] << [4,1] << [5,1] << [2,2]
+    end
+    
+    it "finds the first occurrence with detect" do
+      result = @it.detect { |i| i[0]==2 }
+      result.must_equal([2,1])
     end
 
+    it "finds the first occurrence with find" do
+      result = @it.find { |i| i[0]==2 }
+      result.must_equal([2,1])
+    end
+
+    it "returns nil if it doesn't find the item with detect" do
+      @it.detect { |i| i[0]==8 }.must_be_nil
+    end
+
+    it "returns nil if it doesn't find the item with find" do
+      @it.find { |i| i[0]==8 }.must_be_nil
+    end
+
+    it "returns :not_there if it doesn't find the item with detect" do
+      @it.detect(->{:not_there}) { |i| i[0]==8 }.must_equal(:not_there)
+    end
+
+    it "returns :not_there if it doesn't find the item with find" do
+      @it.find(->{:not_there}) { |i| i[0]==8 }.must_equal(:not_there)
+    end
   end
 
-  describe "#find_all and #detect" do
-    
+  describe "#find_all and #select" do
+    before do
+      @it << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12
+    end
+
+    it "returns an array whith the even numbers with find_all" do
+      @it.find_all { |i| i%2==0 }.must_equal([2, 4, 6, 8, 10, 12])
+    end
+
+    it "returns an array whith the even numbers with select" do
+      @it.select { |i| i%2==0 }.must_equal([2, 4, 6, 8, 10, 12])
+    end
+
+    it "returns an empty array if it doesn't find anithing whith find_all" do
+      @it.find_all { |i| i%2==3 }.must_equal([])
+    end
+
+    it "returns an empty array if it doesn't find anithing whith select" do
+      @it.select { |i| i%2==3 }.must_equal([])
+    end
+
+
   end
 
 

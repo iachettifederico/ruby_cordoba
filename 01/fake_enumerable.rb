@@ -1,8 +1,8 @@
 module FakeEnumerable
   def map
-    salida = []
-    each { |i| salida << yield(i) }
-    salida
+    out = []
+    each { |i| out << yield(i) }
+    out
   end
   alias :collect :map
 
